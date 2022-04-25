@@ -1,10 +1,10 @@
 {
   "manifest_version": 3,
-  "name": "React Content Script",
-  "version": "0.0.1",
+  "name": "React Content Script1",
+  "version": "0.0.2",
   "content_scripts": [
     {
-      "matches": ["https://blank.org/"],
+      "matches": ["https://www.google.ca/maps/*","https://www.google.com/maps/*", "https://www.google.com.ua/maps/*"],
       "run_at": "document_end",
       "js": [],
       "css": [],
