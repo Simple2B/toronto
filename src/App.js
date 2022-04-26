@@ -2,12 +2,20 @@ import logo from './logo.png';
 import './App.css';
 // import log from './log.png';
 import { useEffect, useMemo, useState } from 'react/cjs/react.production.min';
-
-
+import { useDrag } from 'react-use-gesture';
 
 
 const App = () => {
-  const [location, setLocation] = useState([])
+  const [location, setLocation] = useState([]);
+  // const [cardList, setCardList] = useState()
+  const [logoPost, setLogoPos] = useState({x: 0, y: 0});
+
+  const bindLogoPost = useDrag((params) => {
+    setLogoPos({
+      x: params.offset[0],
+      y: params.offset[1],
+    });
+  });
 
   const coords = useMemo(
     () =>
@@ -26,10 +34,22 @@ const App = () => {
 
   }, [location])
 
+
+
   return (
-    <div className="App">
+    <div
+      className="App"
+      {...bindLogoPost()}
+      style={{
+        position: 'relative',
+        top: logoPost.y,
+        left: logoPost.x,
+      }}
+    >
       <header className="App-header">
-        <div className="selectors">
+        <div
+          className="selectors"
+        >
           <label>
             <h2 className="title">Model</h2>
             <select className="selector">
