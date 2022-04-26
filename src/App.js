@@ -4,13 +4,15 @@ import './App.css';
 import { useEffect, useMemo, useState } from 'react/cjs/react.production.min';
 import { useDrag } from 'react-use-gesture';
 
+const carModelFromServer = ['Niro', 'MDX FWD', 'John Cooper Works Hardtop 2 door', 'K5'];
+const carMakeFromServer = ['Kia', 'Acura', 'MINI', 'Volkswagen'];
+const carYearFromServer = ['2022', '2021', '2020', '2019'];
 
 const App = () => {
-  // const [location, setLocation] = useState([]);
-  const [logoPost, setLogoPos] = useState({x: 0, y: 0});
+  const [dragWidget, setDragWidget] = useState({x: 0, y: 0});
 
-  const bindLogoPost = useDrag((params) => {
-    setLogoPos({
+  const setWidgetCoords = useDrag((params) => {
+    setDragWidget({
       x: params.offset[0],
       y: params.offset[1],
     });
@@ -38,11 +40,11 @@ const App = () => {
   return (
     <div
       className="App"
-      {...bindLogoPost()}
+      {...setWidgetCoords()}
       style={{
         position: 'relative',
-        top: logoPost.y,
-        left: logoPost.x,
+        top: dragWidget.y,
+        left: dragWidget.x,
       }}
     >
       <header className="App-header">
@@ -52,30 +54,33 @@ const App = () => {
           <label>
             <h2 className="title">Model</h2>
             <select className="selector">
-              <option className="option" value="Niro">Niro</option>
-              <option value="MDX FWD">MDX FWD</option>
-              <option value="John Cooper Works Hardtop 2 door">John Cooper Works Hardtop 2 door</option>
-              <option value="K5">K5</option>
+              {carModelFromServer.map((model, i) => (
+                <option key={i} value={model}>
+                {model}
+              </option>
+              ))}
             </select>
           </label>
 
           <label>
             <h2 className="title">Make</h2>
             <select className="selector">
-              <option value="Kia">Kia</option>
-              <option value="Acura">Acura</option>
-              <option value="MINI">MINI</option>
-              <option value="Volkswagen">Volkswagen</option>
+              {carMakeFromServer.map((make, i) => (
+                <option key={i} value={make}>
+                {make}
+              </option>
+              ))}
             </select>
           </label>
 
           <label>
             <h2 className="title">Year</h2>
             <select className="selector">
-              <option selected value="2022">2022</option>
-              <option value="2021">2021</option>
-              <option value="2020">2020</option>
-              <option value="2019">2019</option>
+              {carYearFromServer.map((year, i) => (
+                <option key={i} value={year}>
+                {year}
+              </option>
+              ))}
             </select>
           </label>
         </div>
