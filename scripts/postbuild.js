@@ -11,7 +11,7 @@ const manifest = require('../public/manifest.json');
  * @returns {string} File name - `'main.66848e72.js'`
  */
 function readFile(path, prefix, extension) {
-  const file = new RegExp(`^${prefix}\.[a-z0-9]+\.${extension}$`)
+  const file = new RegExp(`^${prefix}.[a-z0-9]+.${extension}$`)
   return fs.readdirSync(`./build/${path}`)
            .filter(filename => file.test(filename))
            .map(filename => `${path}/${filename}`)[0];
@@ -19,7 +19,7 @@ function readFile(path, prefix, extension) {
 
 const js = readFile('static/js', 'main', 'js');
 const css = readFile('static/css', 'main', 'css');
-const logo = readFile('static/media', 'logo', 'svg');
+const logo = readFile('static/media', 'logo', 'png');
 
 const newManifest = {
   ...manifest,

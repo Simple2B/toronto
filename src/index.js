@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 
 const body = document.querySelector('body');
 
-const app = document.createElement('section');
+const app = document.createElement('div');
 
 app.id = 'root';
 
@@ -17,13 +17,7 @@ app.id = 'root';
 // Also control when the content script is injected from the manifest.json:
 // https://developer.chrome.com/docs/extensions/mv3/content_scripts/#run_time
 
-// body.prepend(app);
-body.prepend(app);
-body.insertAdjacentHTML('beforebegin', '<h1 class="beforebegin">body beforebegin</h1>');
-body.insertAdjacentHTML('afterbegin', '<h1 class="afterbegin">body afterbegin</h1>');
-body.insertAdjacentHTML('beforeend', '<h1 class="beforeend">body beforeend</h1>');
-body.insertAdjacentHTML('afterend', '<h1 class="afterend">body afterend</h1>');
-
+body.append(app);
 
 ReactDOM.render(
   <React.StrictMode>
