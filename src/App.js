@@ -6,8 +6,7 @@ import { useDrag } from 'react-use-gesture';
 
 
 const App = () => {
-  const [location, setLocation] = useState([]);
-  // const [cardList, setCardList] = useState()
+  // const [location, setLocation] = useState([]);
   const [logoPost, setLogoPos] = useState({x: 0, y: 0});
 
   const bindLogoPost = useDrag((params) => {
@@ -17,22 +16,22 @@ const App = () => {
     });
   });
 
-  const coords = useMemo(
-    () =>
-      location.length > 0 && (
-        <>
-          <div>Start: {location[3]}</div>
-          <div>End: {location[4]}</div>
-        </>
-      ),
-    [location],
-  );
+  // const coords = useMemo(
+  //   () =>
+  //     location.length > 0 && (
+  //       <>
+  //         <div>Start: {location[3]}</div>
+  //         <div>End: {location[4]}</div>
+  //       </>
+  //     ),
+  //   [location],
+  // );
 
-  useEffect(() => {
-    const splitLocation = window.location.pathname.split('/');
-    setLocation(splitLocation)
+  // useEffect(() => {
+  //   const splitLocation = window.location.pathname.split('/');
+  //   setLocation(splitLocation)
 
-  }, [location])
+  // }, [location])
 
 
 
