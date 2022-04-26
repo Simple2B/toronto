@@ -9,6 +9,7 @@ const carMakeFromServer = ['Kia', 'Acura', 'MINI', 'Volkswagen'];
 const carYearFromServer = ['2022', '2021', '2020', '2019'];
 
 const App = () => {
+  // const [location, setLocation] = useState([])
   const [dragWidget, setDragWidget] = useState({x: 0, y: 0});
 
   const setWidgetCoords = useDrag((params) => {
@@ -54,6 +55,7 @@ const App = () => {
           <label>
             <h2 className="title">Model</h2>
             <select className="selector">
+            <option value="0">Choose a car</option>
               {carModelFromServer.map((model, i) => (
                 <option key={i} value={model}>
                 {model}
@@ -65,6 +67,7 @@ const App = () => {
           <label>
             <h2 className="title">Make</h2>
             <select className="selector">
+            <option value="0">Choose a brand</option>
               {carMakeFromServer.map((make, i) => (
                 <option key={i} value={make}>
                 {make}
@@ -76,6 +79,7 @@ const App = () => {
           <label>
             <h2 className="title">Year</h2>
             <select className="selector">
+            <option value="0">Choose a year</option>
               {carYearFromServer.map((year, i) => (
                 <option key={i} value={year}>
                 {year}
