@@ -3,6 +3,7 @@ import './App.css';
 // import log from './log.png';
 import { useEffect, useMemo, useState } from 'react/cjs/react.production.min';
 import { useDrag } from 'react-use-gesture';
+import { instance } from './api/backend';
 
 const carModelFromServer = ['Niro', 'MDX FWD', 'John Cooper Works Hardtop 2 door', 'K5'];
 const carMakeFromServer = ['Kia', 'Acura', 'MINI', 'Volkswagen'];
@@ -36,6 +37,24 @@ const App = () => {
 
   // }, [location])
 
+  const [goods, setGoods] = useState([])
+
+  const getGoods = async () => {
+    const response = await instance().get('/goods');
+    console.log(response.data);
+    setGoods(response.data);
+  }
+
+  useEffect(() => {
+    getGoods()
+  }, [])
+
+  // const [time, setTime] = useState('')
+  // const [direcion, setDirection] = useState('')
+
+  // const getGasPrice = async () => {
+  //   const response = await instance(time, direcion).get()
+  // }
 
 
   return (
@@ -52,6 +71,18 @@ const App = () => {
         <div
           className="selectors"
         >
+          <label>
+            <h2 className="title">Goods from server</h2>
+            <select className="selector">
+            <option value="0">Choose a good</option>
+              {goods.map(good => (
+                <option key={good.i} value={good.name}>
+                {good.name}
+              </option>
+              ))}
+            </select>
+          </label>
+
           <label>
             <h2 className="title">Model</h2>
             <select className="selector">
