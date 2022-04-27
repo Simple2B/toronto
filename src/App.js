@@ -37,24 +37,35 @@ const App = () => {
 
   // }, [location])
 
-  const [goods, setGoods] = useState([])
+  const [count, setCount] = useState(0)
 
-  const getGoods = async () => {
-    const response = await instance().get('/goods');
-    console.log(response.data);
-    setGoods(response.data);
+  const add = () => {
+    setCount(e => e + 1);
+  }
+
+  // const [goods, setGoods] = useState([])
+
+  // const getGoods = async () => {
+  //   const response = await instance().get('/goods');
+  //   console.log(response.data);
+  //   setGoods(response.data);
+  // }
+
+  // useEffect(() => {
+  //   getGoods()
+  // }, [])
+
+  const [time, setTime] = useState('')
+  const [direcion, setDirection] = useState('')
+
+  const getGasPrice = async () => {
+    const response = await instance(count).get(`/api/count/number`)
+    console.log('response - ', response);
   }
 
   useEffect(() => {
-    getGoods()
-  }, [])
-
-  // const [time, setTime] = useState('')
-  // const [direcion, setDirection] = useState('')
-
-  // const getGasPrice = async () => {
-  //   const response = await instance(time, direcion).get()
-  // }
+    getGasPrice();
+  }, [count])
 
 
   return (
@@ -71,7 +82,7 @@ const App = () => {
         <div
           className="selectors"
         >
-          <label>
+          {/* <label>
             <h2 className="title">Goods from server</h2>
             <select className="selector">
             <option value="0">Choose a good</option>
@@ -81,7 +92,7 @@ const App = () => {
               </option>
               ))}
             </select>
-          </label>
+          </label> */}
 
           <label>
             <h2 className="title">Model</h2>
@@ -123,6 +134,8 @@ const App = () => {
         <span>The price of gasoline: <br/>
           <b>{50}$</b>
         </span>
+        <span>Count: {count}</span>
+        <button type="button" onClick={() => add()}>+1</button>
       </header>
     </div>
   );

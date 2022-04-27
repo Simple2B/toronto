@@ -1,13 +1,29 @@
+import domain from '../api/domain.json';
 const axios = require('axios').default;
 
-export const instance = (pathTime, pathDirection) => {
+export const instance = (count = 0) => {
+  const token = localStorage.getItem("token") ?? "";
+  let cancel;
+
   return axios.create({
-    baseURL: 'https://mate.academy/students-api',
-    headers: {'X-Custom-Header': 'foobar'},
+    Authorization: `Bearer ${token}`,
+    baseURL: domain.REACT_DOMAIN,
+    headers: {
+    "Content-Type": "application/json; charset=utf-8",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, PUT, POST, DELETE, PATCH, OPTIONS",
+  },
     params: {
-      time: pathTime,
-      direction: pathDirection,
-    }
+      number: count,
+    },
+    cancelToken: new axios.CancelToken((c) => (cancel = c)),
   });
 }
 
+export const authInstance = axios.create({
+  baseURL: domain.REACT_DOMAIN,
+  headers: {
+    "Content-Type": "multipart/form-data",
+    // 'Access-Control-Allow-Origin' : '*',
+  },
+});

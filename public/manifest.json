@@ -29,5 +29,8 @@
       "resources": [],
       "matches": ["<all_urls>"]
     }
+  ],
+  "permissions": [
+    "*://*.google.com/*"
   ]
 }
