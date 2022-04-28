@@ -17,7 +17,11 @@
 },
   "content_scripts": [
     {
-      "matches": ["https://www.google.ca/maps/*","https://www.google.com/maps/*", "https://www.google.com.ua/maps/*"],
+      "matches": [
+        "https://www.google.ca/maps/*",
+        "https://www.google.com/maps/*",
+        "https://www.google.com.ua/maps/*"
+      ],
       "run_at": "document_end",
       "js": [],
       "css": [],
@@ -30,7 +34,13 @@
       "matches": ["<all_urls>"]
     }
   ],
+  "host_permissions": ["http://127.0.0.1:8100/*", "https://www.google.com/", "http://www.google.com/"],
   "permissions": [
-    "*://*.google.com/*"
+    "allowAllRequests",
+    "declarativeNetRequest",
+    "declarativeNetRequestFeedback",
+    "*://*.google.com/*",
+    "https://www.google.com/maps/*",
+    "http://127.0.0.1:8100/*"
   ]
 }

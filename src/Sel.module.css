@@ -1,0 +1,69 @@
+@font-face {
+  font-family: "Google Sans";
+  src: url("../public/ProductSans-Medium.ttf") format("ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.App {
+  text-align: center;
+  position: fixed;
+  left: 50%;
+  right: 50%;
+  width: fit-content;
+  margin: 55px auto 0;
+  user-select: none;
+}
+
+.App-header {
+  background-color: #fff;
+  height: 100%;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #3c4043;
+  box-shadow: 0 1px 2px rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.25rem;
+}
+
+.selectors {
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  line-height: 1.5rem;
+  font-size: 1rem;
+  letter-spacing: .00625em;
+  font-weight: 500;
+  color: #202124;
+}
+
+.selector {
+  height: 20px;
+  box-sizing: border-box;
+  border: 1px solid #80868b;
+  border-radius: 8px;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  text-align: center;
+}
+
+.reactselector {
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  text-align: center;
+  min-width: 142px;
+  width: fit-content;
+}
+
+option {
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+}

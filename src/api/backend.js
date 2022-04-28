@@ -3,7 +3,6 @@ const axios = require('axios').default;
 
 export const instance = (count = 0) => {
   const token = localStorage.getItem("token") ?? "";
-  let cancel;
 
   return axios.create({
     Authorization: `Bearer ${token}`,
@@ -12,11 +11,11 @@ export const instance = (count = 0) => {
     "Content-Type": "application/json; charset=utf-8",
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET, PUT, POST, DELETE, PATCH, OPTIONS",
+    "Access-Control-Allow-Headers": "*"
   },
     params: {
       number: count,
     },
-    cancelToken: new axios.CancelToken((c) => (cancel = c)),
   });
 }
 

@@ -4,14 +4,39 @@ import './App.css';
 import { useEffect, useMemo, useState } from 'react/cjs/react.production.min';
 import { useDrag } from 'react-use-gesture';
 import { instance } from './api/backend';
+import Select from 'react-select'
+import styles from './Sel.module.css';
 
-const carModelFromServer = ['Niro', 'MDX FWD', 'John Cooper Works Hardtop 2 door', 'K5'];
-const carMakeFromServer = ['Kia', 'Acura', 'MINI', 'Volkswagen'];
-const carYearFromServer = ['2022', '2021', '2020', '2019'];
+// const carModelFromServer = ['Niro', 'MDX FWD', 'John Cooper Works Hardtop 2 door', 'K5'];
+// const carMakeFromServer = ['Kia', 'Acura', 'MINI', 'Volkswagen'];
+// const carYearFromServer = ['2022', '2021', '2020', '2019'];
+
+const carModelFromServer = [
+  {value: 'Niro', label: 'Niro'},
+  {value: 'MDX FWD', label: 'MDX FWD'},
+  {value: 'John Cooper Works Hardtop 2 door', label: 'John Cooper Works Hardtop 2 door'},
+  {value: 'K5', label: 'K5'},
+  ];
+
+const carMakeFromServer = [
+  {value: 'Acura', label: 'Acura'},
+  {value: 'Kia', label: 'Kia'},
+  {value: 'MINI', label: 'MINI'},
+  {value: 'K5', label: 'K5'},
+]
+
+const carYearFromServer = [
+  {value: '2022', label: '2022'},
+  {value: '2021', label: '2021'},
+  {value: '2020', label: '2020'},
+  {value: '2019', label: '2019'},
+]
 
 const App = () => {
   // const [location, setLocation] = useState([])
   const [dragWidget, setDragWidget] = useState({x: 0, y: 0});
+  // const [querySearch, setSearchQuery] = useState('');
+  // console.log('querySearch - ', querySearch);
 
   const setWidgetCoords = useDrag((params) => {
     setDragWidget({
@@ -44,19 +69,26 @@ const App = () => {
   }
 
   // const [goods, setGoods] = useState([])
+  // console.log('goods', goods);
 
   // const getGoods = async () => {
   //   const response = await instance().get('/goods');
   //   console.log(response.data);
-  //   setGoods(response.data);
+  //   // 0: {id: 6, createdAt: '2020-06-24T09:43:05.574Z', updatedAt: '2020-06-24T09:43:05.574Z', name: 'Bread', color: 'blue'}
+  //   const x = []
+  //   response.data.map(e => (
+  //     x.push({value: e.name, label: e.name})
+  //   ))
+
+  //   setGoods(x);
   // }
 
   // useEffect(() => {
   //   getGoods()
   // }, [])
 
-  const [time, setTime] = useState('')
-  const [direcion, setDirection] = useState('')
+  // const [time, setTime] = useState('')
+  // const [direcion, setDirection] = useState('')
 
   const getGasPrice = async () => {
     const response = await instance(count).get(`/api/count/number`)
@@ -66,7 +98,6 @@ const App = () => {
   useEffect(() => {
     getGasPrice();
   }, [count])
-
 
   return (
     <div
@@ -82,52 +113,28 @@ const App = () => {
         <div
           className="selectors"
         >
-          {/* <label>
-            <h2 className="title">Goods from server</h2>
-            <select className="selector">
-            <option value="0">Choose a good</option>
-              {goods.map(good => (
-                <option key={good.i} value={good.name}>
-                {good.name}
-              </option>
-              ))}
-            </select>
-          </label> */}
-
           <label>
             <h2 className="title">Model</h2>
-            <select className="selector">
-            <option value="0">Choose a car</option>
-              {carModelFromServer.map((model, i) => (
-                <option key={i} value={model}>
-                {model}
-              </option>
-              ))}
-            </select>
+
+            <div className={styles.reactselector}>
+              <Select options={carModelFromServer} defaultOptions isClearable/>
+            </div>
           </label>
 
           <label>
             <h2 className="title">Make</h2>
-            <select className="selector">
-            <option value="0">Choose a brand</option>
-              {carMakeFromServer.map((make, i) => (
-                <option key={i} value={make}>
-                {make}
-              </option>
-              ))}
-            </select>
+
+            <div className={styles.reactselector}>
+              <Select options={carMakeFromServer} defaultOptions isClearable/>
+            </div>
           </label>
 
           <label>
             <h2 className="title">Year</h2>
-            <select className="selector">
-            <option value="0">Choose a year</option>
-              {carYearFromServer.map((year, i) => (
-                <option key={i} value={year}>
-                {year}
-              </option>
-              ))}
-            </select>
+
+            <div className={styles.reactselector}>
+              <Select options={carYearFromServer} defaultOptions isClearable/>
+            </div>
           </label>
         </div>
 
