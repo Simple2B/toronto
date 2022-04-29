@@ -3,40 +3,15 @@ import './App.css';
 // import log from './log.png';
 import { useEffect, useMemo, useState } from 'react/cjs/react.production.min';
 import { useDrag } from 'react-use-gesture';
-import { instance } from './api/backend';
+// import { instance } from './api/backend';
 import Select from 'react-select'
 import styles from './Sel.module.css';
-
-// const carModelFromServer = ['Niro', 'MDX FWD', 'John Cooper Works Hardtop 2 door', 'K5'];
-// const carMakeFromServer = ['Kia', 'Acura', 'MINI', 'Volkswagen'];
-// const carYearFromServer = ['2022', '2021', '2020', '2019'];
-
-const carModelFromServer = [
-  {value: 'Niro', label: 'Niro'},
-  {value: 'MDX FWD', label: 'MDX FWD'},
-  {value: 'John Cooper Works Hardtop 2 door', label: 'John Cooper Works Hardtop 2 door'},
-  {value: 'K5', label: 'K5'},
-  ];
-
-const carMakeFromServer = [
-  {value: 'Acura', label: 'Acura'},
-  {value: 'Kia', label: 'Kia'},
-  {value: 'MINI', label: 'MINI'},
-  {value: 'K5', label: 'K5'},
-]
-
-const carYearFromServer = [
-  {value: '2022', label: '2022'},
-  {value: '2021', label: '2021'},
-  {value: '2020', label: '2020'},
-  {value: '2019', label: '2019'},
-]
+import { useRef } from 'react';
+import { instance } from './api/backend';
 
 const App = () => {
-  // const [location, setLocation] = useState([])
+  const [location, setLocation] = useState([])
   const [dragWidget, setDragWidget] = useState({x: 0, y: 0});
-  // const [querySearch, setSearchQuery] = useState('');
-  // console.log('querySearch - ', querySearch);
 
   const setWidgetCoords = useDrag((params) => {
     setDragWidget({
@@ -45,59 +20,106 @@ const App = () => {
     });
   });
 
-  // const coords = useMemo(
-  //   () =>
-  //     location.length > 0 && (
-  //       <>
-  //         <div>Start: {location[3]}</div>
-  //         <div>End: {location[4]}</div>
-  //       </>
-  //     ),
-  //   [location],
-  // );
+  const coords = useMemo(
+    () =>
+      location.length > 0 && (
+        <>
+          <div>Start: {location[3]}</div>
+          <div>End: {location[4]}</div>
+        </>
+      ),
+    [location],
+  );
 
-  // useEffect(() => {
-  //   const splitLocation = window.location.pathname.split('/');
-  //   setLocation(splitLocation)
+//   console.log('start -', location[5]);
+//   console.log('end -', location[6]);
+//   // https://www.google.com/maps/dir/43.6493958,-79.351307/41.99133,-84.6440607/@42.871383,-85.7242728,7z/data=!4m2!4m1!3e0?hl=en
 
-  // }, [location])
 
-  const [count, setCount] = useState(0)
 
-  const add = () => {
-    setCount(e => e + 1);
-  }
+  useEffect(() => {
+    const splitLocation = document.location.pathname.split('/');
+    setLocation(splitLocation)
+  }, [])
 
-  // const [goods, setGoods] = useState([])
-  // console.log('goods', goods);
 
-  // const getGoods = async () => {
-  //   const response = await instance().get('/goods');
-  //   console.log(response.data);
-  //   // 0: {id: 6, createdAt: '2020-06-24T09:43:05.574Z', updatedAt: '2020-06-24T09:43:05.574Z', name: 'Bread', color: 'blue'}
-  //   const x = []
-  //   response.data.map(e => (
-  //     x.push({value: e.name, label: e.name})
-  //   ))
+  const [distance, setDistance] = useState([])
+  const [duration, setDUration] = useState([])
 
-  //   setGoods(x);
+  // const getCoords = async () => {
+  //   if (location[3]) {
+  //     const response = await instance2(location[3], location[4]).get('/api/coords');
+  //     console.log('-----------------', response.data.rows[0].elements[0].distance.text);
+  //     console.log('-----------------', response.data.rows[0].elements[0].duration.text);
+
+  //     setDistance(response.data.rows[0].elements[0].distance.text)
+  //     setDUration(response.data.rows[0].elements[0].duration.text)
+  //   }
+
   // }
 
   // useEffect(() => {
-  //   getGoods()
-  // }, [])
+  //   getCoords()
+  // }, [location])
 
   // const [time, setTime] = useState('')
   // const [direcion, setDirection] = useState('')
 
+  const [gasPrice, setGasPrice] = useState(0)
+  const [mileage, setMileage] = useState(0)
+  const [makeList, setMakeList] = useState([])
+  const [modList, setModList] = useState([])
+  const [yearList, setYearList] = useState([])
+  // console.log('makeList --- ', makeList);
+
   const getGasPrice = async () => {
-    const response = await instance(count).get(`/api/count/number`)
-    console.log('response - ', response);
+    if (location[3]) {
+      const response = await instance(2022, 'BMW', 'M8 Competition Coupe', 'Toronto', location[3], location[4]).get('/api/gas_consumption')
+      console.log('getGasPrice response - ', response.data);
+      setGasPrice(response.data.gas_price)
+      setMileage(response.data.mileage)
+
+      // console.log('-------------', response.data.coords[0]);
+
+      setDistance(response.data.coords[0])
+      setDUration(response.data.coords[1])
+
+      setMakeList(response.data.make_list[0])
+      setModList(response.data.make_list[1])
+      setYearList(response.data.make_list[2])
+    }
   }
 
+  // const [item, setItem] = useState('')
+
+  // const SELECT_VALUE_KEY = "MySelectValue";
+
+  // const handleChange = (selectedOption) => {
+  //   localStorage.setItem(SELECT_VALUE_KEY, JSON.stringify(selectedOption));
+  //   console.log('selectedOption', selectedOption.value);
+  //   setItem(selectedOption.value);
+  // }
+
   useEffect(() => {
-    getGasPrice();
-  }, [count])
+    // const lastSelected = JSON.parse(
+    //   localStorage.getItem(SELECT_VALUE_KEY) ?? ""
+    // );
+    // setItem(lastSelected);
+    getGasPrice()
+  }, [location])
+
+  // const [selected, setSelected] = useState([]);
+  // const handleChange1 = (s) => {
+  //   localStorage.setItem(SELECT_VALUE_KEY, JSON.stringify(s));
+  //   setSelected(s);
+  // };
+
+  // useEffect(() => {
+  //   const lastSelected = JSON.parse(
+  //     localStorage.getItem(SELECT_VALUE_KEY) ?? "[]"
+  //   );
+  //   setSelected(lastSelected);
+  // }, []);
 
   return (
     <div
@@ -109,6 +131,7 @@ const App = () => {
         left: dragWidget.x,
       }}
     >
+
       <header className="App-header">
         <div
           className="selectors"
@@ -117,15 +140,16 @@ const App = () => {
             <h2 className="title">Model</h2>
 
             <div className={styles.reactselector}>
-              <Select options={carModelFromServer} defaultOptions isClearable/>
+              <Select options={modList} defaultOptions isClearable/>
             </div>
+
           </label>
 
           <label>
             <h2 className="title">Make</h2>
 
             <div className={styles.reactselector}>
-              <Select options={carMakeFromServer} defaultOptions isClearable/>
+              <Select options={makeList} defaultOptions isClearable/>
             </div>
           </label>
 
@@ -133,16 +157,19 @@ const App = () => {
             <h2 className="title">Year</h2>
 
             <div className={styles.reactselector}>
-              <Select options={carYearFromServer} defaultOptions isClearable/>
+              <Select options={yearList} defaultOptions isClearable/>
             </div>
           </label>
         </div>
 
         <span>The price of gasoline: <br/>
-          <b>{50}$</b>
+          <b>{distance} $</b>
         </span>
-        <span>Count: {count}</span>
-        <button type="button" onClick={() => add()}>+1</button>
+        {' '}
+        <span>Distance: {distance}</span>
+        {' '}
+        <span>Duration: {duration}</span>
+        {coords}
       </header>
     </div>
   );
