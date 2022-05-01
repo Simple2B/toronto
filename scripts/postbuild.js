@@ -19,7 +19,7 @@ function readFile(path, prefix, extension) {
 
 const js = readFile('static/js', 'main', 'js');
 const css = readFile('static/css', 'main', 'css');
-const logo = readFile('static/media', 'logo', 'png');
+// const logo = readFile('static/media', 'logo', 'png');
 
 const newManifest = {
   ...manifest,
@@ -33,7 +33,7 @@ const newManifest = {
   web_accessible_resources: [
     {
       ...manifest.web_accessible_resources[0],
-      resources: [css, logo]
+      resources: [css]
 
     }
   ]
