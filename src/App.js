@@ -7,20 +7,20 @@ import styles from './Sel.module.css';
 import { instance } from './api/backend';
 
 const typeGas = [
-  {value: 'Regular', label: 'Regular'},
-  {value: 'Mid-grade', label: 'Mid-grade'},
-  {value: 'Premium', label: 'Premium'},
-  {value: 'Diesel', label: 'Diesel'},
+  {value: 'Regular_Gas.xlsx', label: 'Regular'},
+  {value: 'Mid-Grade_Gas.xlsx', label: 'Mid-grade'},
+  {value: 'Premium_Gas.xlsx', label: 'Premium'},
+  {value: 'Diesel.xlsx', label: 'Diesel'},
 ]
 
 const App = () => {
   const [dragWidget, setDragWidget] = useState({x: 0, y: 0});
-  const [gasPriceforTrip, setGasPriceForTrip] = useState([])
-  const [tripDuration, setTripDuration] = useState([])
   const [gasPrice, setGasPrice] = useState(0)
-  const [modelList, setModelList] = useState([])
-  const [makeList, setMakeList] = useState([])
-  const [yearList, setYearList] = useState([])
+
+  const [modelListFromServer, setModelListFromServer] = useState([])
+  const [makeListFromServer, setMakeListFromServer] = useState([])
+  const [yearListFromServer, setYearListFromServer] = useState([])
+
   const [distance, setDistance] = useState('');
 
   const [location, setLocation] = useState([])
@@ -28,33 +28,32 @@ const App = () => {
   const [end, setEnd] = useState('')
 
   const [carModel, setCarModel] = useState('');
-  console.log('carModel ------ ', carModel);
-
   const [carMake, setCarMake] = useState('');
-  // console.log('carMake ------ ', carMake);
-
   const [carYear, setCarYear] = useState(0);
-  // console.log('carYear ------ ', carYear);
-
   const [gasType, setGasType] = useState('');
-  // console.log('gasType ------ ', gasType);
 
-  const [array, setArray] = useState(['', '', 0])
-  console.log('array ------------- ', array);
+  const [selectorsData, setSelectorsData] = useState(['', '', 0, ''])
 
   const getGasPrice = async () => {
     if (location[3]) {
-      const response = await instance(array[0], array[1], array[2], 'Toronto', distance).get('/api/gas_consumption')
+      const response = await instance(
+        selectorsData[0],
+        selectorsData[1],
+        selectorsData[2],
+        'Toronto',
+        distance,
+        selectorsData[3]
+      ).get('/api/gas_consumption')
+
       console.log('Response data - ', response.data);
 
       setGasPrice(response.data.gas_price)
 
-      setModelList(response.data.vehicle_data_list[0])
-      setMakeList(response.data.vehicle_data_list[1])
-      setYearList(response.data.vehicle_data_list[2])
+      setModelListFromServer(response.data.vehicle_data_list[0])
+      setMakeListFromServer(response.data.vehicle_data_list[1])
+      setYearListFromServer(response.data.vehicle_data_list[2])
     }
   }
-
 
   useEffect(() => {
     const splitLocation = document.location.pathname.split('/');
@@ -63,26 +62,47 @@ const App = () => {
     setEnd(splitLocation[4])
   }, [])
 
-  // const locat = useLocation();
-
-
   const getValueFromSite = () => {
+    // get distance from DOM
     const elementSection = document.getElementById('section-directions-trip-0');
-    const cityElement = document.getElementById('sb_ifc50');
-    console.log('cityElement - ', cityElement);
-
     const divBlock = elementSection.getElementsByTagName('div')[1];
     const divBlock2 = divBlock.getElementsByTagName('div')[0];
     const divBlock3 = divBlock2.getElementsByTagName('div')[1];
     const divBlock4 = divBlock3.getElementsByTagName('div')[0];
 
+    // Barrie
+    // Brantford
+    // Guelph
+    // Hamilton
+    // Kitchener
+    // Oshawa
+    // Peterborough
+    // Toronto
+
+    // get City name from DOM
+    const startCityElement = document.getElementById('sb_ifc50');
+    // если вводить в ручную в инпут название локи то нет ошибки
+    // а если карта сама будет, то при строении ДОМа, инпут будет пустой
+    // и поэтому startCityElement будет ровно null
+    if (startCityElement) {
+      const inputElement = startCityElement.getElementsByTagName('input')
+      const textFromAttribute = inputElement[0].getAttribute('aria-label')
+      console.log('Start city - ', textFromAttribute);
+    }
+
+    // // get City name from DOM
+    const EndCityElement = document.getElementById('sb_ifc51');
+    if (EndCityElement) {
+      const inputElement = EndCityElement.getElementsByTagName('input')
+      const textFromAttribute = inputElement[0].getAttribute('aria-label')
+      console.log('End city - ', textFromAttribute);
+    }
+
+    // get text from tag element
     const value = divBlock4.textContent;
 
     setDistance(value)
   }
-
-  // const [test, setTest] = useState()
-  // console.log('test', test)
 
   const getSelectedModelValue = (option) => {
     if (option === null || option === undefined) {
@@ -95,27 +115,14 @@ const App = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    setArray([carModel, carMake, carYear, gasType])
+    setSelectorsData([carModel, carMake, carYear, gasType])
+    console.log('array - ', [carModel, carMake, carYear, gasType]);
   }
 
   useEffect(() => {
     getGasPrice()
     getValueFromSite()
-  }, [start, end, array[0]])
-
-  // const coords = useMemo(
-  //   () =>
-  //     location.length > 0 && (
-  //       <>
-  //         <div>Start: {location[3]}</div>
-  //         <div>End: {location[4]}</div>
-  //       </>
-  //     ),
-  //   [location],
-  // );
-
-
-
+  }, [start, end, selectorsData[0]])
 
   const getSelectedMakeValue = (option) => {
     if (option === null || option === undefined) {
@@ -139,15 +146,12 @@ const App = () => {
     }
   };
 
-
-
   const setWidgetCoords = useDrag((params) => {
     setDragWidget({
       x: params.offset[0],
       y: params.offset[1],
     });
   });
-
 
   return (
     <div
@@ -168,7 +172,7 @@ const App = () => {
               <h2 className="title">Model</h2>
 
               <div className={styles.reactselector}>
-                <Select onChange={getSelectedModelValue} options={modelList} defaultOptions isClearable />
+                <Select onChange={getSelectedModelValue} options={modelListFromServer} defaultOptions isClearable />
               </div>
 
             </label>
@@ -177,7 +181,7 @@ const App = () => {
             <h2 className="title">Make</h2>
 
             <div className={styles.reactselector}>
-              <Select onChange={getSelectedMakeValue} options={makeList} defaultOptions isClearable/>
+              <Select onChange={getSelectedMakeValue} options={makeListFromServer} defaultOptions isClearable/>
             </div>
           </label>
 
@@ -185,7 +189,7 @@ const App = () => {
             <h2 className="title">Year</h2>
 
             <div className={styles.reactselector}>
-              <Select onChange={getSelectedYearValue} options={yearList} defaultOptions isClearable/>
+              <Select onChange={getSelectedYearValue} options={yearListFromServer} defaultOptions isClearable/>
             </div>
           </label>
 

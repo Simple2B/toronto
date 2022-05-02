@@ -1,7 +1,7 @@
 import domain from '../api/domain.json';
 const axios = require('axios').default;
 
-export const instance = (model, make, year, town, distance) => {
+export const instance = (model, make, year, town, distance, gasType) => {
   const token = localStorage.getItem("token") ?? "";
 
   return axios.create({
@@ -18,7 +18,8 @@ export const instance = (model, make, year, town, distance) => {
       make: make,
       year: year,
       town: town,
-      distance: distance
+      distance: distance,
+      gasType
     },
   });
 }

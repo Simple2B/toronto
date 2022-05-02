@@ -16,15 +16,17 @@
 }
 
 .App-header {
-  background-color: #fff;
-  height: 100%;
-  border-radius: 8px;
-  padding: 12px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  height: 100%;
+  padding: 12px;
+
+  background-color: #fff;
+  border-radius: 8px;
   color: #3c4043;
   box-shadow: 0 1px 2px rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
+
   font-family: "Google Sans", Roboto, Arial, sans-serif;
   font-size: 0.875rem;
   font-weight: 500;
