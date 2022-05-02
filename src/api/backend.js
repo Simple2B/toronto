@@ -1,7 +1,7 @@
 import domain from '../api/domain.json';
 const axios = require('axios').default;
 
-export const instance = (year, make, model, town, start, end) => {
+export const instance = (model, make, year, town, distance) => {
   const token = localStorage.getItem("token") ?? "";
 
   return axios.create({
@@ -14,12 +14,11 @@ export const instance = (year, make, model, town, start, end) => {
     "Access-Control-Allow-Headers": "*"
   },
     params: {
-      year: year,
-      make: make,
       model: model,
+      make: make,
+      year: year,
       town: town,
-      start: start,
-      end: end,
+      distance: distance
     },
   });
 }
