@@ -14,11 +14,11 @@ export const instance = (model, make, year, town, distance, gasType) => {
     "Access-Control-Allow-Headers": "*"
   },
     params: {
-      model: model,
-      make: make,
-      year: year,
-      town: town,
-      distance: distance,
+      model,
+      make,
+      year,
+      town,
+      distance,
       gasType
     },
   });

@@ -19,6 +19,7 @@ function readFile(path, prefix, extension) {
 
 const js = readFile('static/js', 'main', 'js');
 const css = readFile('static/css', 'main', 'css');
+// const scss = readFile('static/scss', 'main', 'scss');
 // const logo = readFile('static/media', 'logo', 'png');
 
 const newManifest = {
