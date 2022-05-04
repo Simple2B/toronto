@@ -83,35 +83,30 @@ const App = () => {
     if (startCityElement !== null) {
       const inputElement = startCityElement.getElementsByTagName('input')
       const textFromAttribute = inputElement[0].getAttribute('aria-label')
+      console.log('textFromAttribute --- ', textFromAttribute);
 
       // instead switch case or if else
-      if (textFromAttribute !== null) {
-        const statusMap = new Map([
-          [textFromAttribute.includes('Toronto'), 'Toronto'],
-          [textFromAttribute.includes('Barrie'), 'Barrie'],
-          [textFromAttribute.includes('Guelph'), 'Guelph'],
-          [textFromAttribute.includes('Hamilton'), 'Hamilton'],
-          [textFromAttribute.includes('Kitchener'), 'Kitchener'],
-          [textFromAttribute.includes('Oshawa'), 'Oshawa'],
-          [textFromAttribute.includes('Peterborough'), 'Peterborough'],
-          [textFromAttribute.includes('Brantford'), 'Brantford'],
-      ]);
+       if (textFromAttribute !== null) {
+         const statusMap = new Map([
+           [textFromAttribute.includes('Toronto'), 'Toronto'],
+           [textFromAttribute.includes('Barrie'), 'Barrie'],
+           [textFromAttribute.includes('Guelph'), 'Guelph'],
+           [textFromAttribute.includes('Hamilton'), 'Hamilton'],
+           [textFromAttribute.includes('Kitchener'), 'Kitchener'],
+           [textFromAttribute.includes('Oshawa'), 'Oshawa'],
+           [textFromAttribute.includes('Peterborough'), 'Peterborough'],
+           [textFromAttribute.includes('Brantford'), 'Brantford'],
+           [textFromAttribute.includes('UK'), 'UK'],
+           [textFromAttribute.includes('United Kingdom'), 'United Kingdom'],
+       ]);
 
-        function getStatusByMap() {
-            return statusMap.get(true) || 'Average';
-        }
+         function getStatusByMap() {
+             return statusMap.get(true) || 'Average';
+         }
 
-        setCity(getStatusByMap());
-      }
+         setCity(getStatusByMap());
+       }
     }
-
-    // const EndCityElement = document.getElementById('sb_ifc51');
-
-    // if (EndCityElement !== null) {
-    //   const inputElement = EndCityElement.getElementsByTagName('input')
-    //   const textFromAttribute = inputElement[0].getAttribute('aria-label')
-    //   console.log('End city - ', textFromAttribute);
-    // }
   }
 
   const handleSubmit = (event) => {
