@@ -6,6 +6,9 @@ import { useDrag } from 'react-use-gesture';
 import Select from 'react-select'
 import styles from './Sel.module.css';
 import { instance } from './api/backend';
+import { instanceModel } from './api/apiModel';
+import { instanceMake } from './api/apiMake';
+import { instanceYear } from './api/apiYear';
 import OutsideClickHandler from 'react-outside-click-handler';
 
 const typeGas = [
@@ -19,8 +22,8 @@ const App = () => {
   const [dragWidget, setDragWidget] = useState({x: 0, y: 0});
   const [gasPrice, setGasPrice] = useState(0);
 
-  const [modelListFromServer, setModelListFromServer] = useState([]);
   const [makeListFromServer, setMakeListFromServer] = useState([]);
+  const [modelListFromServer, setModelListFromServer] = useState([]);
   const [yearListFromServer, setYearListFromServer] = useState([]);
 
   const [distance, setDistance] = useState('0');
@@ -54,13 +57,35 @@ const App = () => {
       console.log('Response data - ', response.data);
 
       setGasPrice(response.data.gas_price);
-
-      setModelListFromServer(response.data.vehicle_data_list[0]);
-      setMakeListFromServer(response.data.vehicle_data_list[1]);
-      setYearListFromServer(response.data.vehicle_data_list[2]);
-
       setCarbonConsumption(response.data.c02_kg);
   }
+
+  const getMake = async () => {
+    const response = await instanceMake().get('/api/make')
+    console.log('response make - ', response);
+    setMakeListFromServer(response.data);
+  }
+
+  const getModel = async () => {
+    const response = await instanceModel(carMake).get('/api/model')
+    console.log('response model - ', response);
+    setModelListFromServer(response.data)
+  }
+
+  useEffect(() => {
+    getModel()
+  }, [carMake])
+
+  const getYear = async () => {
+    const response = await instanceYear().get('/api/year')
+    console.log('response year - ', response);
+    setYearListFromServer(response.data)
+  }
+
+  useEffect(() => {
+    getMake()
+    getYear()
+  }, [])
 
   const getValueFromSite = () => {
     // get distance from DOM
@@ -116,6 +141,7 @@ const App = () => {
   }
 
   useEffect(() => {
+    getModel()
     handleClick()
     getValueFromSite()
   }, [click])
@@ -124,31 +150,35 @@ const App = () => {
     getGasPrice()
   }, [distance, selectorsData[0], selectorsData[1], selectorsData[2], selectorsData[3]])
 
+  const getSelectedMakeValue = (option) => {
+    if (option === null || option === undefined) {
+      console.log('option null', option);
+      setCarMake('');
+    } else {
+      console.log('option.value', option.value);
+      setCarMake(option.value);
+    }
+  };
+
   const getSelectedModelValue = (option) => {
     if (option === null || option === undefined) {
-      return;
+      setCarModel('');
     } else {
       setCarModel(option.value);
     }
   };
 
-  const getSelectedMakeValue = (option) => {
-    if (option === null || option === undefined) {
-      return;
-    } else {
-      setCarMake(option.value);
-    }
-  };
   const getSelectedYearValue = (option) => {
     if (option === null || option === undefined) {
-      return;
+      setCarYear('');
     } else {
       setCarYear(option.value);
     }
   };
+
   const getSelectedGasTypeValue = (option) => {
     if (option === null || option === undefined) {
-      return;
+      setGasType('');
     } else {
       setGasType(option.value);
     }
