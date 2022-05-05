@@ -54,21 +54,17 @@ const App = () => {
         selectorsData[3]
       ).get('/api/gas_consumption');
 
-      console.log('Response data - ', response.data);
-
       setGasPrice(response.data.gas_price);
       setCarbonConsumption(response.data.c02_kg);
   }
 
   const getMake = async () => {
     const response = await instanceMake().get('/api/make')
-    console.log('response make - ', response.data);
     setMakeListFromServer(response.data.filterer_make_list);
   }
 
   const getModel = async () => {
     const response = await instanceModel(carMake).get('/api/model')
-    console.log('response model - ', response.data);
     setModelListFromServer(response.data.filterer_model_list)
   }
 
@@ -78,7 +74,6 @@ const App = () => {
 
   const getYear = async () => {
     const response = await instanceYear().get('/api/year')
-    console.log('response year - ', response.data);
     setYearListFromServer(response.data.vehicle_year_list)
   }
 
@@ -108,7 +103,6 @@ const App = () => {
     if (startCityElement !== null) {
       const inputElement = startCityElement.getElementsByTagName('input')
       const textFromAttribute = inputElement[0].getAttribute('aria-label')
-      console.log('textFromAttribute --- ', textFromAttribute);
 
       // instead switch case or if else
        if (textFromAttribute !== null) {
@@ -152,10 +146,8 @@ const App = () => {
 
   const getSelectedMakeValue = (option) => {
     if (option === null || option === undefined) {
-      console.log('option null', option);
       setCarMake('');
     } else {
-      console.log('option.value', option.value);
       setCarMake(option.value);
     }
   };
