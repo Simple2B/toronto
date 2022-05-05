@@ -239,9 +239,6 @@ const App = () => {
           <button className="submit-button" type="submit">Save</button>
           </form>
         </div>
-
-        <span>Distance: {distance}</span>
-        {' '}
         <span>Gas Price for a Trip: <br/>
           <b>{gasPrice} &#36;</b>
         </span>
