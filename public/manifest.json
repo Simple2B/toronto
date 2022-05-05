@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "React Content Script",
+  "name": "Tern",
   "description": "Check the cost of gas for your Google Maps planned trip.",
-  "version": "0.0.2",
+  "version": "1",
   "icons": {
     "16": "/logo/tern16-2.png",
     "48": "/logo/tern48-2.png",
