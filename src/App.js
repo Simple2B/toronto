@@ -62,14 +62,14 @@ const App = () => {
 
   const getMake = async () => {
     const response = await instanceMake().get('/api/make')
-    console.log('response make - ', response);
-    setMakeListFromServer(response.data);
+    console.log('response make - ', response.data);
+    setMakeListFromServer(response.data.filterer_make_list);
   }
 
   const getModel = async () => {
     const response = await instanceModel(carMake).get('/api/model')
-    console.log('response model - ', response);
-    setModelListFromServer(response.data)
+    console.log('response model - ', response.data);
+    setModelListFromServer(response.data.filterer_model_list)
   }
 
   useEffect(() => {
@@ -78,8 +78,8 @@ const App = () => {
 
   const getYear = async () => {
     const response = await instanceYear().get('/api/year')
-    console.log('response year - ', response);
-    setYearListFromServer(response.data)
+    console.log('response year - ', response.data);
+    setYearListFromServer(response.data.vehicle_year_list)
   }
 
   useEffect(() => {
@@ -215,7 +215,7 @@ const App = () => {
             <h2 className="title">Make</h2>
 
             <div className={styles.reactselector}>
-              <Select onChange={getSelectedMakeValue} options={makeListFromServer} defaultOptions isClearable/>
+              <Select onChange={getSelectedMakeValue} options={makeListFromServer} isClearable/>
             </div>
           </label>
 
