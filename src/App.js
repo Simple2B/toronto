@@ -202,7 +202,7 @@ const App = () => {
         <div
           className="selectors"
         >
-          <form onSubmit={handleSubmit}>
+          <form className="selector-form" onSubmit={handleSubmit}>
           <label>
             <h2 className="title">Make</h2>
 
