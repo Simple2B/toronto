@@ -33,14 +33,5 @@
       "resources": [],
       "matches": ["<all_urls>"]
     }
-  ],
-  "host_permissions": ["http://127.0.0.1:8100/*", "https://www.google.com/", "http://www.google.com/"],
-  "permissions": [
-    "allowAllRequests",
-    "declarativeNetRequest",
-    "declarativeNetRequestFeedback",
-    "*://*.google.com/*",
-    "https://www.google.com/maps/*",
-    "http://127.0.0.1:8100/*"
   ]
 }

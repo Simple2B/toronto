@@ -51,3 +51,25 @@
   border-radius: 8px;
   text-align: center;
 }
+
+.Sel_reactselector__q6nVr {
+  margin: 0 auto;
+}
+
+.display-result {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 5px;
+  display: inline-block;
+  padding: 5px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px #193047;
+}
+
+.result-title {
+  font-size: 16px;
+}
+
+.result-title-margin {
+  margin-bottom: 12px;
+}

@@ -229,7 +229,7 @@ const App = () => {
           </label>
 
           <label>
-            <h2 className="title">Type of gasoline</h2>
+            <h2 className="title">Type of Gasoline</h2>
 
             <div className={styles.reactselector}>
               <Select onChange={getSelectedGasTypeValue} options={typeGas} defaultOptions isClearable/>
@@ -239,10 +239,11 @@ const App = () => {
           <button className="submit-button" type="submit">Save</button>
           </form>
         </div>
-        <span>Gas Price for a Trip: <br/>
-          <b>{gasPrice} &#36;</b>
+        <span className="result-title result-title-margin">Gas Price for a Trip: <br/>
+          <span className="display-result">{gasPrice} &#36;</span>
         </span>
-        <span>CO2 produced: {carbonConsumption} <b>kg</b><br/>
+        <span className="result-title">CO2 Produced: <br/>
+          <span className="display-result">{carbonConsumption} kg</span>
         </span>
       </header>
     </div>
