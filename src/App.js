@@ -73,13 +73,16 @@ const App = () => {
   }, [carMake])
 
   const getYear = async () => {
-    const response = await instanceYear().get('/api/year')
+    const response = await instanceYear(carModel).get('/api/year')
     setYearListFromServer(response.data.vehicle_year_list)
   }
 
   useEffect(() => {
-    getMake()
     getYear()
+  }, [carModel])
+
+  useEffect(() => {
+    getMake()
   }, [])
 
   const getValueFromSite = () => {
@@ -97,12 +100,11 @@ const App = () => {
       setDistance(value)
     }
 
-    // get City name from DOM
-    const startCityElement = document.getElementById('sb_ifc50');
+    const startCityElement = document.querySelector('html > body > div > div > div > div > div > div > div > div > div > div > div > div > input');
 
-    if (startCityElement !== null) {
-      const inputElement = startCityElement.getElementsByTagName('input')
-      const textFromAttribute = inputElement[0].getAttribute('aria-label')
+    if (startCityElement !== null && startCityElement !== undefined) {
+      const textFromAttribute = startCityElement.getAttribute('aria-label')
+      console.log('city -', textFromAttribute);
 
       // instead switch case or if else
        if (textFromAttribute !== null) {
