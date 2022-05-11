@@ -3,19 +3,24 @@ import './App.css';
 import './Button.scss';
 import { useEffect, useState } from 'react/cjs/react.production.min';
 import { useDrag } from 'react-use-gesture';
+import { useLocalStorage } from './hookLocalStorage';
+
 import Select from 'react-select'
 import styles from './Sel.module.css';
+
 import { instance } from './api/backend';
 import { instanceModel } from './api/apiModel';
 import { instanceMake } from './api/apiMake';
 import { instanceYear } from './api/apiYear';
+
 import OutsideClickHandler from 'react-outside-click-handler';
 
 const typeGas = [
-  {value: 'Regular_Gas.xlsx', label: 'Regular'},
-  {value: 'Mid-Grade_Gas.xlsx', label: 'Mid-Grade'},
-  {value: 'Premium_Gas.xlsx', label: 'Premium'},
-  {value: 'Diesel.xlsx', label: 'Diesel'},
+  {value: 'Regular', label: 'Regular'},
+  {value: 'Mid-Grade', label: 'Mid-Grade'},
+  {value: 'Premium', label: 'Premium'},
+  {value: 'Diesel', label: 'Diesel'},
+  // {value: 'UK', label: 'UK'},
 ]
 
 const App = () => {
@@ -29,28 +34,16 @@ const App = () => {
   const [distance, setDistance] = useState('0');
   const [carbonConsumption, setCarbonConsumption] = useState(0);
 
-  const [carModel, setCarModel] = useState('');
-  const [carMake, setCarMake] = useState('');
-  const [carYear, setCarYear] = useState(0);
-  const [gasType, setGasType] = useState('');
+  const [carMake, setCarMake] = useLocalStorage("Make", '');
+  const [carModel, setCarModel] = useLocalStorage("Model", '');
+  const [carYear, setCarYear] = useLocalStorage("Model_year", 0);
+  const [gasType, setGasType] = useLocalStorage("Type_of_Gasoline", '');
 
   const [selectorsData, setSelectorsData] = useState(['', '', 0, '']);
 
   const [city, setCity] = useState('');
 
   const [click, setClick] = useState()
-
-  const [name, setName] = useState(() => {
-    // getting stored value
-    const saved = localStorage.getItem("carMake");
-    const initialValue = JSON.parse(saved);
-    return initialValue || "";
-  });
-
-  useEffect(() => {
-    // storing input name
-    localStorage.setItem("carMake", JSON.stringify(name));
-  }, [name]);
 
   const handleClick = (e) => {
     setClick(e)
@@ -80,13 +73,13 @@ const App = () => {
   }, [])
 
   const getModel = async () => {
-    const response = await instanceModel(name).get('/api/model')
+    const response = await instanceModel(carMake).get('/api/model')
     setModelListFromServer(response.data.filterer_model_list)
   }
 
   useEffect(() => {
     getModel()
-  }, [name])
+  }, [carMake])
 
   const getYear = async () => {
     const response = await instanceYear(carModel).get('/api/year')
@@ -144,7 +137,7 @@ const App = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    setSelectorsData([carModel, name, carYear, gasType])
+    setSelectorsData([carModel, carMake, carYear, gasType])
   }
 
   useEffect(() => {
@@ -161,7 +154,6 @@ const App = () => {
     if (option === null || option === undefined) {
       setCarMake('');
     } else {
-      setName(option.value)
       setCarMake(option.value);
     }
   };
@@ -221,7 +213,12 @@ const App = () => {
             <h2 className="title">Make</h2>
 
             <div className={styles.reactselector}>
-              <Select onChange={getSelectedMakeValue} options={makeListFromServer} defaultValue={{ value: name, label: name }} isClearable/>
+              <Select
+                onChange={getSelectedMakeValue}
+                options={makeListFromServer}
+                defaultValue={{ value: carMake, label: carMake }}
+                isClearable
+              />
             </div>
           </label>
 
@@ -229,7 +226,12 @@ const App = () => {
               <h2 className="title">Model</h2>
 
               <div className={styles.reactselector}>
-                <Select onChange={getSelectedModelValue} options={modelListFromServer} defaultOptions isClearable />
+                <Select
+                  onChange={getSelectedModelValue}
+                  options={modelListFromServer}
+                  defaultValue={{ value: carModel, label: carModel }}
+                  isClearable
+                  />
               </div>
 
             </label>
@@ -238,7 +240,12 @@ const App = () => {
             <h2 className="title">Year</h2>
 
             <div className={styles.reactselector}>
-              <Select onChange={getSelectedYearValue} options={yearListFromServer} defaultOptions isClearable/>
+              <Select
+                onChange={getSelectedYearValue}
+                options={yearListFromServer}
+                defaultValue={{ value: carYear, label: carYear }}
+                isClearable
+              />
             </div>
           </label>
 
@@ -246,7 +253,12 @@ const App = () => {
             <h2 className="title">Type of Gasoline</h2>
 
             <div className={styles.reactselector}>
-              <Select onChange={getSelectedGasTypeValue} options={typeGas} defaultOptions isClearable/>
+              <Select
+                onChange={getSelectedGasTypeValue}
+                options={typeGas}
+                defaultValue={{ value: gasType, label: gasType }}
+                isClearable
+              />
             </div>
           </label>
 
