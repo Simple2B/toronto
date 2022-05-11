@@ -40,6 +40,18 @@ const App = () => {
 
   const [click, setClick] = useState()
 
+  const [name, setName] = useState(() => {
+    // getting stored value
+    const saved = localStorage.getItem("carMake");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
+
+  useEffect(() => {
+    // storing input name
+    localStorage.setItem("carMake", JSON.stringify(name));
+  }, [name]);
+
   const handleClick = (e) => {
     setClick(e)
   }
@@ -63,14 +75,18 @@ const App = () => {
     setMakeListFromServer(response.data.filterer_make_list);
   }
 
+  useEffect(() => {
+    getMake()
+  }, [])
+
   const getModel = async () => {
-    const response = await instanceModel(carMake).get('/api/model')
+    const response = await instanceModel(name).get('/api/model')
     setModelListFromServer(response.data.filterer_model_list)
   }
 
   useEffect(() => {
     getModel()
-  }, [carMake])
+  }, [name])
 
   const getYear = async () => {
     const response = await instanceYear(carModel).get('/api/year')
@@ -81,22 +97,17 @@ const App = () => {
     getYear()
   }, [carModel])
 
-  useEffect(() => {
-    getMake()
-  }, [])
-
   const getValueFromSite = () => {
     // get distance from DOM
-    const elementSection = document.getElementById(`section-directions-trip-0`);
+    // const elementSection = document.getElementById(`section-directions-trip-0`);
+    // const elementSection = document.querySelector('html > body > div > div > div > div > div > div > div > div > div > div > div > div > div > div > div > div > div > div');
+    const elementSection = document.querySelector("#section-directions-trip-0 > div.MespJc > div:nth-child(1) > div.XdKEzd > div.ivN21e.tUEI8e.fontBodyMedium > div");
+    console.log('elementSection --- ', elementSection);
 
-    if (elementSection !== null) {
-      const divBlock = elementSection.getElementsByTagName('div')[1];
-      const divBlock2 = divBlock.getElementsByTagName('div')[0];
-      const divBlock3 = divBlock2.getElementsByTagName('div')[1];
-      const divBlock4 = divBlock3.getElementsByTagName('div')[0];
-
+    if (elementSection !== null && elementSection !== undefined) {
           // get text from tag element
-      const value = divBlock4.textContent;
+      const value = elementSection.textContent;
+      console.log('value --- ', value, typeof(value));
       setDistance(value)
     }
 
@@ -133,7 +144,7 @@ const App = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    setSelectorsData([carModel, carMake, carYear, gasType])
+    setSelectorsData([carModel, name, carYear, gasType])
   }
 
   useEffect(() => {
@@ -150,6 +161,7 @@ const App = () => {
     if (option === null || option === undefined) {
       setCarMake('');
     } else {
+      setName(option.value)
       setCarMake(option.value);
     }
   };
@@ -209,7 +221,7 @@ const App = () => {
             <h2 className="title">Make</h2>
 
             <div className={styles.reactselector}>
-              <Select onChange={getSelectedMakeValue} options={makeListFromServer} isClearable/>
+              <Select onChange={getSelectedMakeValue} options={makeListFromServer} defaultValue={{ value: name, label: name }} isClearable/>
             </div>
           </label>
 
