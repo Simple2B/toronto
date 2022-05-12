@@ -25,28 +25,26 @@ const typeGas = [
 
 const App = () => {
   const [dragWidget, setDragWidget] = useState({x: 0, y: 0});
-  const [gasPrice, setGasPrice] = useState(0);
+  const [click, setClick] = useState();
+
+  const [gasPrice, setGasPrice] = useLocalStorage('Gas_price', 0);
+  const [carbonConsumption, setCarbonConsumption] = useLocalStorage('CO2', 0);
 
   const [makeListFromServer, setMakeListFromServer] = useState([]);
   const [modelListFromServer, setModelListFromServer] = useState([]);
   const [yearListFromServer, setYearListFromServer] = useState([]);
 
-  const [distance, setDistance] = useState('0');
-  const [carbonConsumption, setCarbonConsumption] = useState(0);
+  const [distance, setDistance] = useLocalStorage('Distance', '0');
+  const [city, setCity] = useLocalStorage('City', '');
 
   const [carMake, setCarMake] = useLocalStorage("Make", '');
   const [carModel, setCarModel] = useLocalStorage("Model", '');
   const [carYear, setCarYear] = useLocalStorage("Model_year", 0);
   const [gasType, setGasType] = useLocalStorage("Type_of_Gasoline", '');
-
-  const [selectorsData, setSelectorsData] = useState(['', '', 0, '']);
-
-  const [city, setCity] = useState('');
-
-  const [click, setClick] = useState()
+  const [selectorsData, setSelectorsData] = useState([carMake, carModel, carYear, gasType]);
 
   const handleClick = (e) => {
-    setClick(e)
+    setClick(e);
   }
 
   const getGasPrice = async () => {
@@ -54,22 +52,26 @@ const App = () => {
         selectorsData[0],
         selectorsData[1],
         selectorsData[2],
-        city,
+        selectorsData[3],
         distance,
-        selectorsData[3]
+        city
       ).get('/api/gas_consumption');
 
-      setGasPrice(response.data.gas_price);
-      setCarbonConsumption(response.data.c02_kg);
+      if (response.status === 200) {
+        setGasPrice(response.data.gas_price);
+        setCarbonConsumption(response.data.c02_kg);
+      } else {
+        alert('Something went wrong... Please, refresh the page!');
+      }
   }
 
   const getMake = async () => {
-    const response = await instanceMake().get('/api/make')
+    const response = await instanceMake().get('/api/make');
     setMakeListFromServer(response.data.filterer_make_list);
   }
 
   useEffect(() => {
-    getMake()
+    getMake();
   }, [])
 
   const getModel = async () => {
@@ -78,7 +80,7 @@ const App = () => {
   }
 
   useEffect(() => {
-    getModel()
+    getModel();
   }, [carMake])
 
   const getYear = async () => {
@@ -87,12 +89,11 @@ const App = () => {
   }
 
   useEffect(() => {
-    getYear()
+    getYear();
   }, [carModel])
 
   const getValueFromSite = () => {
     // Get distance value from DOM elements
-
     // Get block elements with all distance routes (main and alternative)
     const routeBlock = document.querySelector("#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.m6QErb");
 
@@ -108,7 +109,6 @@ const App = () => {
             if (elementWithText !== null && elementWithText !== undefined) {
               const distanceValue = elementWithText.textContent;
 
-              console.log('GO to State - ', distanceValue);
               setDistance(distanceValue);
             }
           }
@@ -149,16 +149,16 @@ const App = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    setSelectorsData([carModel, carMake, carYear, gasType])
+    setSelectorsData([carMake, carModel, carYear, gasType])
   }
 
   useEffect(() => {
-    handleClick()
-    getValueFromSite()
+    handleClick();
+    getValueFromSite();
   }, [click])
 
   useEffect(() => {
-    getGasPrice()
+    getGasPrice();
   }, [distance, selectorsData[0], selectorsData[1], selectorsData[2], selectorsData[3]])
 
   const getSelectedMakeValue = (option) => {
