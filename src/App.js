@@ -82,7 +82,7 @@ const App = () => {
   }, [carMake])
 
   const getYear = async () => {
-    const response = await instanceYear(carModel).get('/api/year')
+    const response = await instanceYear(carModel, carMake).get('/api/year')
     setYearListFromServer(response.data.vehicle_year_list)
   }
 
@@ -91,24 +91,36 @@ const App = () => {
   }, [carModel])
 
   const getValueFromSite = () => {
-    // get distance from DOM
-    // const elementSection = document.getElementById(`section-directions-trip-0`);
-    // const elementSection = document.querySelector('html > body > div > div > div > div > div > div > div > div > div > div > div > div > div > div > div > div > div > div');
-    const elementSection = document.querySelector("#section-directions-trip-0 > div.MespJc > div:nth-child(1) > div.XdKEzd > div.ivN21e.tUEI8e.fontBodyMedium > div");
-    console.log('elementSection --- ', elementSection);
+    // Get distance value from DOM elements
 
-    if (elementSection !== null && elementSection !== undefined) {
-          // get text from tag element
-      const value = elementSection.textContent;
-      console.log('value --- ', value, typeof(value));
-      setDistance(value)
+    // Get block elements with all distance routes (main and alternative)
+    const routeBlock = document.querySelector("#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.m6QErb");
+
+    if (routeBlock !== null && routeBlock !== undefined) {
+      const routeList = routeBlock.childNodes;
+
+      if (routeList.length > 0) {
+        // loop to check which route is currently selected
+        for (let i = 0; i < routeList.length; i++) {
+          if (routeList[i].className.includes('selected')) {
+            const elementWithText = document.querySelector(`#section-directions-trip-${i} > div.MespJc > div:nth-child(1) > div.XdKEzd > div.ivN21e.tUEI8e.fontBodyMedium > div`);
+
+            if (elementWithText !== null && elementWithText !== undefined) {
+              const distanceValue = elementWithText.textContent;
+
+              console.log('GO to State - ', distanceValue);
+              setDistance(distanceValue);
+            }
+          }
+        }
+      }
     }
 
+    // Get city name from DOM input
     const startCityElement = document.querySelector('html > body > div > div > div > div > div > div > div > div > div > div > div > div > input');
 
     if (startCityElement !== null && startCityElement !== undefined) {
       const textFromAttribute = startCityElement.getAttribute('aria-label')
-      console.log('city -', textFromAttribute);
 
       // instead switch case or if else
        if (textFromAttribute !== null) {
@@ -141,7 +153,6 @@ const App = () => {
   }
 
   useEffect(() => {
-    getModel()
     handleClick()
     getValueFromSite()
   }, [click])
