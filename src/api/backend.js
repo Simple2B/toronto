@@ -2,8 +2,6 @@ import domain from '../api/domain.json';
 const axios = require('axios').default;
 
 export const instance = (make, model, year, gasType, distance, town) => {
-  console.log('make', make);
-  console.log('model', model);
   const token = localStorage.getItem("token") ?? "";
 
   return axios.create({
