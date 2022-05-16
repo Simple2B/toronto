@@ -20,12 +20,12 @@ const typeGas = [
   {value: 'Mid-Grade', label: 'Mid-Grade'},
   {value: 'Premium', label: 'Premium'},
   {value: 'Diesel', label: 'Diesel'},
-  // {value: 'UK', label: 'UK'},
+  {value: 'UK Prices', label: 'UK Prices'},
 ]
 
 const App = () => {
   const [dragWidget, setDragWidget] = useState({x: 0, y: 0});
-  const [click, setClick] = useState();
+  // const [click, setClick] = useState();
 
   const [gasPrice, setGasPrice] = useLocalStorage('Gas_price', 0);
   const [carbonConsumption, setCarbonConsumption] = useLocalStorage('CO2', 0);
@@ -43,9 +43,9 @@ const App = () => {
   const [gasType, setGasType] = useLocalStorage("Type_of_Gasoline", '');
   const [selectorsData, setSelectorsData] = useState([carMake, carModel, carYear, gasType]);
 
-  const handleClick = (e) => {
-    setClick(e);
-  }
+  // const handleClick = (e) => {
+  //   setClick(e);
+  // }
 
   const getGasPrice = async () => {
       const response = await instance(
@@ -148,14 +148,15 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    getValueFromSite();
 
     setSelectorsData([carMake, carModel, carYear, gasType])
   }
 
-  useEffect(() => {
-    handleClick();
-    getValueFromSite();
-  }, [click])
+  // useEffect(() => {
+  //   handleClick();
+  //   getValueFromSite();
+  // }, [click])
 
   useEffect(() => {
     getGasPrice();
@@ -203,7 +204,7 @@ const App = () => {
   return (
     <OutsideClickHandler
     onOutsideClick={() => {
-      handleClick('1')
+      // handleClick('1')
     }}
   >
     <div
@@ -273,7 +274,7 @@ const App = () => {
             </div>
           </label>
 
-          <button className="submit-button" type="submit">Save</button>
+          <button className="submit-button" type="submit">Calculate</button>
           </form>
         </div>
         <span className="result-title result-title-margin">Gas Price for a Trip: <br/>
