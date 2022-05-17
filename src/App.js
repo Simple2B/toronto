@@ -13,8 +13,6 @@ import { instanceModel } from './api/apiModel';
 import { instanceMake } from './api/apiMake';
 import { instanceYear } from './api/apiYear';
 
-import OutsideClickHandler from 'react-outside-click-handler';
-
 const typeGas = [
   {value: 'Regular', label: 'Regular'},
   {value: 'Mid-Grade', label: 'Mid-Grade'},
@@ -25,7 +23,6 @@ const typeGas = [
 
 const App = () => {
   const [dragWidget, setDragWidget] = useState({x: 0, y: 0});
-  // const [click, setClick] = useState();
 
   const [gasPrice, setGasPrice] = useLocalStorage('Gas_price', 0);
   const [carbonConsumption, setCarbonConsumption] = useLocalStorage('CO2', 0);
@@ -43,10 +40,6 @@ const App = () => {
   const [gasType, setGasType] = useLocalStorage("Type_of_Gasoline", '');
   const [selectorsData, setSelectorsData] = useState([carMake, carModel, carYear, gasType]);
 
-  // const handleClick = (e) => {
-  //   setClick(e);
-  // }
-
   const getGasPrice = async () => {
       const response = await instance(
         selectorsData[0],
@@ -56,6 +49,14 @@ const App = () => {
         distance,
         city
       ).get('/api/gas_consumption');
+
+      if (response.data.error === 'wrong_car_options') {
+        alert('Wrong vehicle options selected. Please enter the options indicated in the dropdown menu.')
+      }
+
+      if (response.data.error === 'wrong_gas_type') {
+        alert('Wrong Type of Gasoline selected for the current city/country.')
+      }
 
       if (response.status === 200) {
         setGasPrice(response.data.gas_price);
@@ -153,11 +154,6 @@ const App = () => {
     setSelectorsData([carMake, carModel, carYear, gasType])
   }
 
-  // useEffect(() => {
-  //   handleClick();
-  //   getValueFromSite();
-  // }, [click])
-
   useEffect(() => {
     getGasPrice();
   }, [distance, selectorsData[0], selectorsData[1], selectorsData[2], selectorsData[3]])
@@ -202,11 +198,6 @@ const App = () => {
   });
 
   return (
-    <OutsideClickHandler
-    onOutsideClick={() => {
-      // handleClick('1')
-    }}
-  >
     <div
       className="App"
       {...setWidgetCoords()}
@@ -285,8 +276,6 @@ const App = () => {
         </span>
       </header>
     </div>
-  </OutsideClickHandler>
-
   );
 }
 

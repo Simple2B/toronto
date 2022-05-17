@@ -15,4 +15,5 @@ code {
 #root {
   position: fixed;
   right: 124px;
+  transform: translateX(160%);
 }
