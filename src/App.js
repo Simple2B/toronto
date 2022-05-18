@@ -18,7 +18,7 @@ const typeGas = [
   {value: 'Mid-Grade', label: 'Mid-Grade'},
   {value: 'Premium', label: 'Premium'},
   {value: 'Diesel', label: 'Diesel'},
-  {value: 'UK Prices', label: 'UK Prices'},
+  {value: 'UK', label: 'UK'},
 ]
 
 const App = () => {
@@ -96,54 +96,110 @@ const App = () => {
   const getValueFromSite = () => {
     // Get distance value from DOM elements
     // Get block elements with all distance routes (main and alternative)
-    const routeBlock = document.querySelector("#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.m6QErb");
 
-    if (routeBlock !== null && routeBlock !== undefined) {
-      const routeList = routeBlock.childNodes;
+    const firstRout = document.querySelector("#section-directions-trip-0");
+    const secondRout = document.querySelector("#section-directions-trip-1");
+    const thirdRout = document.querySelector("#section-directions-trip-2");
 
-      if (routeList.length > 0) {
-        // loop to check which route is currently selected
-        for (let i = 0; i < routeList.length; i++) {
-          if (routeList[i].className.includes('selected')) {
-            const elementWithText = document.querySelector(`#section-directions-trip-${i} > div.MespJc > div:nth-child(1) > div.XdKEzd > div.ivN21e.tUEI8e.fontBodyMedium > div`);
-
-            if (elementWithText !== null && elementWithText !== undefined) {
-              const distanceValue = elementWithText.textContent;
-
-              setDistance(distanceValue);
-            }
-          }
-        }
+    if (firstRout !== null && firstRout !== undefined) {
+      if (firstRout.className.includes('selected') === true) {
+        const routValue = document.querySelector("#section-directions-trip-0 > div.MespJc > div:nth-child(1) > div.XdKEzd > div.ivN21e.tUEI8e.fontBodyMedium > div").textContent;
+        setDistance(routValue);
+      }
+    }
+    if (secondRout !== null && secondRout !== undefined) {
+      if (secondRout.className.includes('selected') === true) {
+        const routValue = document.querySelector("#section-directions-trip-1 > div.MespJc > div:nth-child(1) > div.XdKEzd > div.ivN21e.tUEI8e.fontBodyMedium > div").textContent;
+        setDistance(routValue);
+      }
+    }
+    if (thirdRout !== null && thirdRout !== undefined) {
+      if (thirdRout.className.includes('selected') === true) {
+        const routValue = document.querySelector("#section-directions-trip-2 > div.MespJc > div:nth-child(1) > div.XdKEzd > div.ivN21e.tUEI8e.fontBodyMedium > div").textContent;
+        setDistance(routValue);
       }
     }
 
     // Get city name from DOM input
+    const country = document.querySelector("#fqBGh > div > div > button:nth-child(11)");
+    console.log('country', country);
+
+    if (country !== null && country !== undefined) {
+      const countryText = country.textContent;
+
+      if (countryText.includes('United Kingdom') === true) {
+        console.log('countryText', countryText);
+        setCity(countryText)
+      }
+
+      getCity()
+
+      if (countryText.includes('Canada') === true) {
+        console.log('countryText', countryText);
+        const startCityElement = document.querySelector('html > body > div > div > div > div > div > div > div > div > div > div > div > div > input');
+        console.log('startCityElement --- ', startCityElement);
+
+        if (startCityElement !== null && startCityElement !== undefined) {
+          const textFromAttribute = startCityElement.getAttribute('aria-label')
+          console.log('textFromAttribute --- ', textFromAttribute);
+
+          // instead switch case or if else
+          if (textFromAttribute !== null) {
+            const statusMap = new Map([
+              [textFromAttribute.includes('Toronto'), 'Toronto'],
+              [textFromAttribute.includes('Barrie'), 'Barrie'],
+              [textFromAttribute.includes('Guelph'), 'Guelph'],
+              [textFromAttribute.includes('Hamilton'), 'Hamilton'],
+              [textFromAttribute.includes('Kitchener'), 'Kitchener'],
+              [textFromAttribute.includes('Oshawa'), 'Oshawa'],
+              [textFromAttribute.includes('Peterborough'), 'Peterborough'],
+              [textFromAttribute.includes('Brantford'), 'Brantford'],
+              [textFromAttribute.includes('United Kingdom'), 'United Kingdom'],
+              [textFromAttribute.includes('UK'), 'UK'],
+          ]);
+
+            function getStatusByMap() {
+                return statusMap.get(true) || 'Average';
+            }
+            console.log(' ----setCity --- ', getStatusByMap());
+            setCity(getStatusByMap());
+          }
+        }
+      }
+    }
+  }
+
+  const getCity = () => {
     const startCityElement = document.querySelector('html > body > div > div > div > div > div > div > div > div > div > div > div > div > input');
+    console.log('startCityElement --- ', startCityElement);
 
     if (startCityElement !== null && startCityElement !== undefined) {
       const textFromAttribute = startCityElement.getAttribute('aria-label')
+      console.log('textFromAttribute --- ', textFromAttribute);
 
+      if (textFromAttribute.includes('Canada') === true) {
       // instead switch case or if else
-       if (textFromAttribute !== null) {
-         const statusMap = new Map([
-           [textFromAttribute.includes('Toronto'), 'Toronto'],
-           [textFromAttribute.includes('Barrie'), 'Barrie'],
-           [textFromAttribute.includes('Guelph'), 'Guelph'],
-           [textFromAttribute.includes('Hamilton'), 'Hamilton'],
-           [textFromAttribute.includes('Kitchener'), 'Kitchener'],
-           [textFromAttribute.includes('Oshawa'), 'Oshawa'],
-           [textFromAttribute.includes('Peterborough'), 'Peterborough'],
-           [textFromAttribute.includes('Brantford'), 'Brantford'],
-           [textFromAttribute.includes('UK'), 'UK'],
-           [textFromAttribute.includes('United Kingdom'), 'United Kingdom'],
-       ]);
+        if (textFromAttribute !== null) {
+          const statusMap = new Map([
+            [textFromAttribute.includes('Toronto'), 'Toronto'],
+            [textFromAttribute.includes('Barrie'), 'Barrie'],
+            [textFromAttribute.includes('Guelph'), 'Guelph'],
+            [textFromAttribute.includes('Hamilton'), 'Hamilton'],
+            [textFromAttribute.includes('Kitchener'), 'Kitchener'],
+            [textFromAttribute.includes('Oshawa'), 'Oshawa'],
+            [textFromAttribute.includes('Peterborough'), 'Peterborough'],
+            [textFromAttribute.includes('Brantford'), 'Brantford'],
+            [textFromAttribute.includes('United Kingdom'), 'United Kingdom'],
+            [textFromAttribute.includes('UK'), 'UK'],
+        ]);
 
-         function getStatusByMap() {
-             return statusMap.get(true) || 'Average';
-         }
-
-         setCity(getStatusByMap());
-       }
+          function getStatusByMap() {
+              return statusMap.get(true) || 'Average';
+          }
+          console.log(' ----setCity --- ', getStatusByMap());
+          setCity(getStatusByMap());
+        }
+      }
     }
   }
 
