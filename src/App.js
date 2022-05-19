@@ -148,7 +148,7 @@ const App = () => {
       const textFromAttribute = startCityElement.getAttribute('aria-label')
       console.log('textFromAttribute --- ', textFromAttribute);
 
-      if (textFromAttribute.includes(mark) === true || mark === 'no') {
+      if (textFromAttribute.includes(mark) === true || mark === 'InCanada') {
       // instead switch case or if else
         if (textFromAttribute !== null) {
           const statusMap = new Map([
@@ -257,6 +257,7 @@ const App = () => {
 
               <div className={styles.reactselector}>
                 <Select
+                  // isDisabled
                   onChange={getSelectedModelValue}
                   options={modelListFromServer}
                   defaultValue={{ value: carModel, label: carModel }}
