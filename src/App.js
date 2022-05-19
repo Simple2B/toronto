@@ -130,46 +130,17 @@ const App = () => {
       if (countryText.includes('United Kingdom') === true) {
         console.log('countryText', countryText);
         setCity(countryText)
+        getCity('Canada')
       }
-
-      getCity()
 
       if (countryText.includes('Canada') === true) {
         console.log('countryText', countryText);
-        const startCityElement = document.querySelector('html > body > div > div > div > div > div > div > div > div > div > div > div > div > input');
-        console.log('startCityElement --- ', startCityElement);
-
-        if (startCityElement !== null && startCityElement !== undefined) {
-          const textFromAttribute = startCityElement.getAttribute('aria-label')
-          console.log('textFromAttribute --- ', textFromAttribute);
-
-          // instead switch case or if else
-          if (textFromAttribute !== null) {
-            const statusMap = new Map([
-              [textFromAttribute.includes('Toronto'), 'Toronto'],
-              [textFromAttribute.includes('Barrie'), 'Barrie'],
-              [textFromAttribute.includes('Guelph'), 'Guelph'],
-              [textFromAttribute.includes('Hamilton'), 'Hamilton'],
-              [textFromAttribute.includes('Kitchener'), 'Kitchener'],
-              [textFromAttribute.includes('Oshawa'), 'Oshawa'],
-              [textFromAttribute.includes('Peterborough'), 'Peterborough'],
-              [textFromAttribute.includes('Brantford'), 'Brantford'],
-              [textFromAttribute.includes('United Kingdom'), 'United Kingdom'],
-              [textFromAttribute.includes('UK'), 'UK'],
-          ]);
-
-            function getStatusByMap() {
-                return statusMap.get(true) || 'Average';
-            }
-            console.log(' ----setCity --- ', getStatusByMap());
-            setCity(getStatusByMap());
-          }
-        }
+        getCity('InCanada')
       }
     }
   }
 
-  const getCity = () => {
+  const getCity = (mark) => {
     const startCityElement = document.querySelector('html > body > div > div > div > div > div > div > div > div > div > div > div > div > input');
     console.log('startCityElement --- ', startCityElement);
 
@@ -177,7 +148,7 @@ const App = () => {
       const textFromAttribute = startCityElement.getAttribute('aria-label')
       console.log('textFromAttribute --- ', textFromAttribute);
 
-      if (textFromAttribute.includes('Canada') === true) {
+      if (textFromAttribute.includes(mark) === true || mark === 'no') {
       // instead switch case or if else
         if (textFromAttribute !== null) {
           const statusMap = new Map([
