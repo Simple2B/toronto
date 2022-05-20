@@ -40,6 +40,9 @@ const App = () => {
   const [gasType, setGasType] = useLocalStorage("Type_of_Gasoline", '');
   const [selectorsData, setSelectorsData] = useState([carMake, carModel, carYear, gasType]);
 
+  const [resetModel, setResetModel] = useState()
+  const [resetYear, setResetYear] = useState()
+
   const getGasPrice = async () => {
       const response = await instance(
         selectorsData[0],
@@ -51,7 +54,7 @@ const App = () => {
       ).get('/api/gas_consumption');
 
       if (response.data.error === 'wrong_car_options') {
-        alert('Wrong vehicle options selected. Please enter the options indicated in the dropdown menu.')
+        alert('Please complete all fields.')
       }
 
       if (response.data.error === 'wrong_gas_type') {
@@ -122,19 +125,17 @@ const App = () => {
 
     // Get city name from DOM input
     const country = document.querySelector("#fqBGh > div > div > button:nth-child(11)");
-    console.log('country', country);
 
     if (country !== null && country !== undefined) {
       const countryText = country.textContent;
 
       if (countryText.includes('United Kingdom') === true) {
-        console.log('countryText', countryText);
         setCity(countryText)
         getCity('Canada')
+        console.log(' ----setCity in United Kingdom --- ', countryText);
       }
 
       if (countryText.includes('Canada') === true) {
-        console.log('countryText', countryText);
         getCity('InCanada')
       }
     }
@@ -142,11 +143,9 @@ const App = () => {
 
   const getCity = (mark) => {
     const startCityElement = document.querySelector('html > body > div > div > div > div > div > div > div > div > div > div > div > div > input');
-    console.log('startCityElement --- ', startCityElement);
 
     if (startCityElement !== null && startCityElement !== undefined) {
       const textFromAttribute = startCityElement.getAttribute('aria-label')
-      console.log('textFromAttribute --- ', textFromAttribute);
 
       if (textFromAttribute.includes(mark) === true || mark === 'InCanada') {
       // instead switch case or if else
@@ -188,24 +187,32 @@ const App = () => {
   const getSelectedMakeValue = (option) => {
     if (option === null || option === undefined) {
       setCarMake('');
+      setResetModel(null)
+      setResetYear(null)
     } else {
       setCarMake(option.value);
+      setResetModel(null)
+      setResetYear(null)
     }
   };
 
   const getSelectedModelValue = (option) => {
     if (option === null || option === undefined) {
-      setCarModel('');
+      setResetModel('');
+      setResetYear(null)
     } else {
       setCarModel(option.value);
+      setResetYear(null)
+      setResetModel({value: option.value, label: option.value})
     }
   };
 
   const getSelectedYearValue = (option) => {
     if (option === null || option === undefined) {
-      setCarYear('');
+      setResetYear('');
     } else {
       setCarYear(option.value);
+      setResetYear({value: option.value, label: option.value})
     }
   };
 
@@ -257,14 +264,13 @@ const App = () => {
 
               <div className={styles.reactselector}>
                 <Select
-                  // isDisabled
+                  value={resetModel}
                   onChange={getSelectedModelValue}
                   options={modelListFromServer}
                   defaultValue={{ value: carModel, label: carModel }}
                   isClearable
-                  />
+                />
               </div>
-
             </label>
 
           <label>
@@ -272,6 +278,7 @@ const App = () => {
 
             <div className={styles.reactselector}>
               <Select
+                value={resetYear}
                 onChange={getSelectedYearValue}
                 options={yearListFromServer}
                 defaultValue={{ value: carYear, label: carYear }}

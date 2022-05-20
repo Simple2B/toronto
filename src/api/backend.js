@@ -2,6 +2,7 @@ import domain from '../api/domain.json';
 const axios = require('axios').default;
 
 export const instance = (make, model, year, gasType, distance, town) => {
+  console.log('To backend - ', make, model, year, gasType, distance, town);
   const token = localStorage.getItem("token") ?? "";
 
   return axios.create({
